@@ -1,0 +1,27 @@
+﻿@model ScrumHelper.Models.Project
+@{
+    ViewBag.Title = "NewProject";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>Dodaj nowy projekt</h2>
+
+@using (Html.BeginForm("SaveProject", "ProjectPage"))
+{
+    <div class="form-grup">
+    
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class= "form-control"})
+
+    </div>
+    <div class="form-grup">
+    
+        @Html.LabelFor(m => m.Notes)
+        @Html.TextAreaFor(m => m.Notes, new { @class= "form-control"})
+
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Dodaj</button>
+}

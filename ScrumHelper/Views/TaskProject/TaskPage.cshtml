@@ -1,0 +1,17 @@
+﻿@using ScrumHelper.Models
+@model ScrumHelper.Models.SprintTask
+
+@{
+    ViewBag.Title = "Task Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>
+    <b>
+        @Html.DisplayFor(m => m.Name)
+    </b>
+</h1>
+<h2>
+   <b>Opis: </b> @Html.DisplayFor(m => m.Note)
+</h2>
+

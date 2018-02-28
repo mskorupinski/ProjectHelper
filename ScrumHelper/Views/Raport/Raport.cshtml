@@ -1,0 +1,100 @@
+﻿@using ScrumHelper.Models
+@model ScrumHelper.Models.Raport
+
+@{ int inprogres = 0; }
+@{ int done = 0;}
+@{ int procent = 0;}
+
+@{
+    ViewBag.Title = "Home Page";
+}
+<h2>@ViewBag.Message</h2>   
+@foreach (var sprint in Model.ViewModel.Sprints)
+{
+
+    procent = 0;
+    done = 0;
+    inprogres = 0;
+
+    <h3>
+        Sprint @sprint.SprintNumber
+
+    </h3>
+    <h4>Termin: @sprint.EndDate</h4>
+    <div class="col-md-12" margin-top-20>
+        <table class="table table-bordered ">
+            <thead>
+                <tr>
+                    <th id="1">Zadanie</th>
+                    <th id="2">Opis</th>
+                    <th id="3">Status</th>
+                    <th id="4">Użytkownicy</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var task in Model.ViewModel.SprintTasks)
+                {
+
+                    if (task.SprintId == sprint.Id)
+                    {
+                        inprogres += 1;
+                            <tr>
+                    
+                                
+                                @if (task.Status == Status.Done)
+                                {
+                                    done += 1;
+                                }
+                                <td>
+        
+                                    <p><b>@task.Name</b></p>
+                                </td>
+                                <td>
+                                    <p>@task.Note</p>
+                                </td>
+                                <td>
+
+                                    <p>@task.Status.ToString()</p>
+                                </td>
+                                <td>
+                                    @foreach (var user in Model.TaskViews)
+                                    {
+                                        if (task.Id == user.CurrnetTaskID)
+                                        {
+                                            foreach (var u in user.TaskUsers)
+                                            {
+                                                <p>@u.User.Name @u.User.Lastname</p>
+                                            }
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        }
+
+                    
+
+                }
+            <p>
+                @if (inprogres == 0)
+                {
+                    procent = (done / 1) * 100;
+                }
+                else
+                {
+                    procent = (int)(0.5f + ((100f * done) / inprogres));
+                }
+                Postęp : @procent %
+                <div class="progress">
+
+                    <div class="progress-bar" role="progressbar" style="width: @procent%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+
+            </p>
+
+            
+        </table>
+
+
+    </div>
+
+}

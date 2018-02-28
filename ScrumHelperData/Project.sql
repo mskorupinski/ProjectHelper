@@ -1,0 +1,10 @@
+﻿CREATE TABLE [dbo].[Project]
+(
+	[Id] INT NOT NULL IDENTITY(1,1),
+	[Name] NVARCHAR(255) NOT NULL,
+	[Note] NVARCHAR(1500) NULL,
+	[CreateData] DATETIME NOT NULL,
+	PRIMARY KEY  CLUSTERED ([Id] ASC),
+
+
+)

@@ -1,0 +1,30 @@
+﻿@model ScrumHelper.Models.SprintTask
+
+@{
+    ViewBag.Title = "NewTask";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>Dodaj nowe zadanie</h2>
+
+@using (Html.BeginForm("SaveTask", "TaskProject"))
+{
+    <div class="form-grup">
+
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+
+    </div>
+    <div class="form-grup">
+
+        @Html.LabelFor(m => m.Note)
+        @Html.TextAreaFor(m => m.Note, new { @class = "form-control" })
+
+    </div>
+    
+    @Html.HiddenFor(m => m.SprintId)
+
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary">Zapisz</button>
+}

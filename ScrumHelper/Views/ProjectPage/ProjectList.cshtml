@@ -1,0 +1,103 @@
+﻿@using Antlr.Runtime.Tree
+@model IEnumerable<ScrumHelper.Models.Project>
+
+
+@{
+    ViewBag.Title = "Lista Twoich projektów";
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12" margin-top-20>
+    <h2>Projekty</h2>
+    <p>
+        @Html.ActionLink("Nowy projekt", "NewProject", "ProjectPage", null, new { @class = "btn btn-primary" })
+    </p>
+
+    <table id="projects" class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>Projekt</th>
+            <th>Opis</th>
+            <th>Data</th>
+            <th>Usuń</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                
+                <td onclick="location.href = '@(Url.Action("Index", "ViewModel", new { ProjectId = item.ID , @class = "btn btn-primary" }))'">
+                    @Html.DisplayFor(modelItem => item.Name)
+
+                </td>               
+                <td>
+                    @Html.DisplayFor(modelItem => item.Notes)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataAdded)
+                </td>
+                <td>
+                    <button onclick="location.href = '@(Url.Action("RemoveProject", "ProjectPage", new {ProjectID=item.ID}))'" class="btn btn-danger" style="width: 100%;  height: 30%">
+                        <span class="glyphicon glyphicon-trash">
+
+                        </span>
+                    </button>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+<div class="col-md-6" margin-top-20>
+    
+</div>
+
+@section scripts
+{
+        <script>
+            $(document).ready(function () {
+                var table = $("#projects").DataTable({
+                    ajax: {
+                        url: "/api/projects",
+                        dataSrc: ""
+                    },
+                    columns: [
+                        {
+                            data: "name",
+                            render: function (data, type, project) {
+                                return "<a href='/customers/edit/" + project.id + "'>" + project.name + "</a>";
+                            }
+                        },
+
+                        {
+                            data: "id",
+                            render: function (data) {
+                                return "<button class='btn-link js-delete' data-customer-id=" + data + ">Delete</button>";
+                            }
+                        }
+                    ]
+                });
+
+
+                $("#projects").on("click", ".js-delete", function () {
+                    var button = $(this);
+
+                    bootbox.confirm("Jesteś pewnie ze chcesz usunać ten projekt?", function (result) {
+                        if (result) {
+                            $.ajax({
+                                url: "/api/customers/" + button.attr("data-customer-id"),
+                                method: "DELETE",
+                                success: function () {
+                                    table.row(button.parents("tr")).remove().draw();
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+        </script>
+    }

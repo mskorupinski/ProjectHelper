@@ -1,0 +1,13 @@
+﻿@model IEnumerable<ScrumHelper.Models.Sprint>
+
+
+@{
+    ViewBag.Title = "SprintList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>SprintView</h2>
+
+<p>
+    @Html.ActionLink("Nowy sprint", "SaveSprint", "Sprint", null, new { @class = "btn btn-primary" })
+</p>

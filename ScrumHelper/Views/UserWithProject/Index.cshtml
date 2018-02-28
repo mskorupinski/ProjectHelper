@@ -1,0 +1,110 @@
+﻿@using ScrumHelper.Models
+@model ScrumHelper.Models.UserWithProject
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+
+@{
+    ViewBag.Title = "Lista użytkowników";
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="col-md-6" margin-top-20>
+    <h2>Użytkownicy</h2>
+
+    <table id="projects" class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>Imię</th>
+            <th>Nazwisko</th>
+            <th>Email</th>
+            <th>Dodaj</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        @foreach (var item in Model.Users)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Lastname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mail)
+                </td>
+                <td>
+                    <button onclick="location.href = '@(Url.Action("AddUserToProject", "UserWithProject", new {UserID=item.Id , projectID = Model.CurrentProjectID}))'" class="btn btn-outline-success" style="width: 100%;  height: 30%">
+                        <span class="glyphicon glyphicon-plus">
+
+                        </span>
+                    </button>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <div class="col-md-3">
+        <button onclick="location.href = '@(Url.Action("Back", "UserWithProject", new {ProjectID = Model.CurrentProjectID}))'" class="btn btn-outline-danger" style="width: 100%;  height: 30%">
+            <span class="glyphicon glyphicon-arrow-left">
+
+            </span>
+        </button>
+    </div>
+</div>
+
+
+
+<div class="col-md-6" margin-top-20>
+    <h2>Członkowie projektu</h2>
+
+
+    <table id="projects" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Imię</th>
+                <th>Nazwisko</th>
+                <th>Email</th>
+                <th>Dodaj</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model.ProjectUsers)
+            {
+                <tr>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.Name)
+                    </td>
+
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.Lastname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.Mail)
+                    </td>
+                    <td>
+                        <button onclick="location.href = '@(Url.Action("RemoveUserFromProject", "UserWithProject", new {UserID=item.User.Id, ProjectID = Model.CurrentProjectID}))'" class="btn btn-outline-danger" style="width: 100%;  height: 30%">
+                            <span class="glyphicon glyphicon-trash">
+
+                            </span>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+

@@ -1,0 +1,165 @@
+﻿
+@using ScrumHelper.Models
+@model ScrumHelper.Models.ViewModel
+@{ int inprogres = 0; }
+@{ int done = 0;}
+@{ int procent = 0;}
+
+@{
+    ViewBag.Title = "Home Page";
+}
+<h2>@ViewBag.Message</h2>
+<p>
+    <button onclick="location.href = '@(Url.Action("NewSprint", "Sprint", new { ProjectId = Model.CurrentProjectID}))'" class="btn btn-primary">Nowy sprint</button>
+    <button onclick="location.href = '@(Url.Action("Index", "UserWithProject", new { ProjectId = Model.CurrentProjectID}))'" class="btn btn-primary">Dodaj członka projektu</button>
+    <button onclick="location.href = '@(Url.Action("Raport", "ViewModel", new { ProjectId = Model.CurrentProjectID , target = "_blank"}))'" class="btn btn-primary">Raport</button>
+</p>
+
+
+@foreach (var sprint in Model.Sprints)
+{
+
+    procent = 0;
+    done = 0;
+    inprogres = 0;
+
+    <h3>
+        Sprint @sprint.SprintNumber
+        
+    </h3>
+    <div class="col-md-12" margin-top-20>
+        <table class="table table-bordered ">
+            <thead>
+                <tr>
+                    <th id="1">Do zrobienia</th>
+                    <th id="2">W trakcie</th>
+                    <th id="3">Testowane</th>
+                    <th id="4">Gotowe</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var task in Model.SprintTasks)
+                {
+
+                    <tr>
+                        @if (task.Status == Status.ToDo && task.SprintId == sprint.Id)
+                        {
+                            inprogres += 1;
+
+                            <td>
+                                <p>
+                                    <button onclick="location.href = '@(Url.Action("TaskPage", "TaskView", new {TaskID=task.Id, ProjectID= Model.CurrentProjectID, SprintID = task.SprintId}))'"
+                                            class="btn btn-secondary" style="height: 100%; width: 100%">
+                                        @task.Name
+                                        
+                                        @foreach (var user in task.UsersInTask)
+                                        {
+                                            @user.Name
+                                        }
+                                    </button>
+                                </p>
+
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        }
+
+
+
+
+                        @if (task.Status == Status.InProggress && task.SprintId == sprint.Id)
+                    {
+                        inprogres += 1;
+                            <td></td>
+                            <td>
+                                <p>
+                                    <button onclick="location.href = '@(Url.Action("TaskPage", "TaskProject", new {TaskID = task.Id}))'"
+                                            class="btn btn-secondary" style="height: 100%; width: 100%">
+                                        @task.Name
+                                    </button>
+                                </p>
+
+                            </td>
+                            <td></td>
+                            <td></td>
+                        }
+
+
+
+                        @if (task.Status == Status.Tested && task.SprintId == sprint.Id)
+                    {
+                        inprogres += 1;
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <p>
+                                    <button onclick="location.href = '@(Url.Action("TaskPage", "TaskProject", new {TaskID = task.Id}))'"
+                                            class="btn btn-secondary" style="height: 100%; width: 100%">
+                                        @task.Name
+                                    </button>
+                                </p>
+                                
+                            </td>
+                            <td></td>
+                        }
+
+
+
+                        @if (task.Status == Status.Done && task.SprintId == sprint.Id)
+                    {
+                        inprogres += 1;
+                        done += 1;
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <p>
+                                    <button onclick="location.href = '@(Url.Action("TaskPage", "TaskView", new {TaskID = task.Id}))'"
+                                            class="btn btn-secondary" style="height: 100%; width: 100%">
+                                        @task.Name
+                                    </button>
+                                </p>
+                              
+                            </td>
+                        }
+                    </tr>
+
+
+                }
+
+
+            </tbody>
+            <p>
+                @if (inprogres == 0)
+                {
+                    procent = (done / 1) * 100;
+                }
+                else
+                {
+                    procent = (int)(0.5f + ((100f * done) / inprogres));
+                }
+                Postęp : @procent %
+                <div class="progress">
+
+                    <div class="progress-bar" role="progressbar" style="width: @procent%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+
+            </p>
+        </table>
+
+        <p>
+            <button onclick="location.href = '@(Url.Action("NewTask", "TaskProject", new { SprintID = sprint.Id}))'"
+                    class="btn btn-primary">
+                Dodaj zadanie
+            </button>
+            <button onclick="location.href = '@(Url.Action("Remove", "Sprint", new { SprintID = sprint.Id, ProjectId = Model.CurrentProjectID}))'"
+                    class="btn btn-primary">
+                Usuń sprint
+            </button>
+
+        </p>
+
+    </div>
+
+}

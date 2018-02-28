@@ -1,0 +1,26 @@
+﻿@model ScrumHelper.Models.Sprint
+@{
+    ViewBag.Title = "NewSprint";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Dodaj nowy sprint do projektu</h2>
+
+@using (Html.BeginForm("SaveSprint", "Sprint", new {id= Model.ProjectId}))
+{
+    <div class="form-grup">
+
+        @Html.LabelFor(m => m.SprintNumber)
+        @Html.TextBoxFor(m => m.SprintNumber, new {@class = "form-control"})
+
+    </div>
+    <div class="form-grup">
+
+        @Html.LabelFor(m => m.Duration)
+        @Html.TextAreaFor(m => m.Duration, new {@class = "form-control"})
+
+    </div>
+    @Html.HiddenFor(m => m.ProjectId)
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary">Save</button>
+}
