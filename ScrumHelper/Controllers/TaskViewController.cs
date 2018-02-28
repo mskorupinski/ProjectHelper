@@ -153,7 +153,7 @@ namespace ScrumHelper.Controllers
 
             var fromAddress = new MailAddress("m.skorupinski11@gmail.com", "From Name");
             var toAddress = new MailAddress(user.Mail, "To"+user.Name+ " "+ user.Lastname);
-            const string fromPassword = "skormar35876";
+            const string fromPassword = ""; //hasło 
             string subject = task.Name;
             string body = "Witaj, " + user.Name + "\n\n" +
                           "Pamiętaj o wykonaniu zadania: " + task.Name + " z projektu " + project.Name + ". \n"
